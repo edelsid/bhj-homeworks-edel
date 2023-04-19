@@ -9,7 +9,7 @@ function clickRight () {
    if (imageArr[imageCount].className.includes("slider__item_active")) {
       imageArr[imageCount].classList.remove("slider__item_active");
       imageCount = imageCount + 1;
-      if (imageCount === 5) {
+      if (imageCount === imageArr.length) {
          imageCount = 0;
       }
       imageArr[imageCount].classList.add("slider__item_active");        
@@ -21,7 +21,7 @@ function clickLeft () {
       imageArr[imageCount].classList.remove("slider__item_active");
       imageCount = imageCount - 1;
       if (imageCount === -1) {
-         imageCount = 4;
+         imageCount = imageArr.length-1;
       }
       imageArr[imageCount].classList.add("slider__item_active");         
    } 
