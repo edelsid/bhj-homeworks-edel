@@ -15,6 +15,10 @@ tab.addEventListener("click", () => {
 
 textArea.addEventListener("keypress", (event) => {
    if (event.key === "Enter" && textArea.value != "") {
+      if (textArea.value.match(/^[ ]+$/)) { 
+         textArea.value = "";
+         return false;
+      }
       let now = new Date();
       let time = now.getHours() + ":" + now.getMinutes();
       if (now.getMinutes() < 10) {
@@ -31,6 +35,7 @@ textArea.addEventListener("keypress", (event) => {
          <div class="message__text">`+response+`</div>
       </div>
       `;
+      textArea.value = "";
    }
 })
 
