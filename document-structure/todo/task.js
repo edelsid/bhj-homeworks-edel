@@ -1,31 +1,32 @@
+const addButton = document.getElementById("tasks__add")
 const textArea = document.getElementById("task__input");
 const listArea = document.getElementById("tasks__list");
 
-textArea.addEventListener("keypress", pressAction);
+addButton.addEventListener("click", pressAction);
+textArea.addEventListener("keyup", pressAction);
 
 function pressAction(event) {
-   if (event.key === "Enter" && textArea.value != "") {
-      event.preventDefault();
-      if (textArea.value.match(/^[ ]+$/)) { 
-         textArea.value = "";
-         return false;
+   event.preventDefault();
+   if (event.type === "click" || event.key === "Enter") {
+      orig = textArea.value.trim();
+      if (orig === "") {
+      textArea.value = "";
+      return false;
       }
       listArea.insertAdjacentHTML("beforeend", 
-      `<div class="task">
-      <div class="task__title">`+textArea.value+
-      `</div>
-      <a href="https://ya.ru" class="task__remove">&times;</a>
-      </div>`);
+         `<div class="task">
+         <div class="task__title">`+textArea.value+
+         `</div>
+         <a href="#" class="task__remove">&times;</a>
+         </div>`);
       textArea.value = "";
-      const taskCount = listArea.querySelectorAll(".task");
-      for (let i = 0; i < taskCount.length; i++){
-         if (taskCount[i].querySelector(".task__remove").hasAttribute("eventActive") === false)  {
-            taskCount[i].querySelector(".task__remove").addEventListener("click", (event) => {
-               event.preventDefault();
-               listArea.removeChild(taskCount[i]);
-            });
-            taskCount[i].querySelector(".task__remove").setAttribute("eventActive", true);
-         }         
-      }
-   }
+      const removeButton = listArea.lastChild.querySelector(".task__remove");
+      removeButton.addEventListener("click", removeAction)
+      
+      function removeAction (event) {
+         event.preventDefault();
+         console.log('1');
+         this.parentElement.remove();
+      }   
+   } 
 }

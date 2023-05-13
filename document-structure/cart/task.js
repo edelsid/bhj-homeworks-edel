@@ -19,26 +19,33 @@ for (let i = 0; i < minusButtons.length; i++) {
 }
 
 for (let i = 0; i < addButtons.length; i++) {
-   addButtons[i].addEventListener ("click", () => {
+   addButtons[i].addEventListener ("click", adding)
+   
+   function adding () {
       let productInfo = addButtons[i].closest(".product");
       let productCount = plusButtons[i].parentElement.querySelector(".product__quantity-value").innerText;
       const addedProducts = cartSpace.querySelectorAll(".cart__product");
+      let productsArr = Array.from(addedProducts);
 
-      for (let i = 0; i < addedProducts.length; i++){
-         if (productInfo.dataset.id === addedProducts[i].dataset.id) {
-            productInfo.dataset.count = Number(productCount) + Number(productInfo.dataset.count);
-            addedProducts[i].querySelector(".cart__product-count").innerText = productInfo.dataset.count;
-            return false;
-         } 
+      function isFound (el) {
+         return el.dataset.id === productInfo.dataset.id
+      }
+
+      const productInCart = productsArr.find(isFound);
+
+      if (productInCart) {
+         productInfo.dataset.count = Number(productCount) + Number(productInfo.dataset.count);
+         productInCart.querySelector(".cart__product-count").innerText = Number(productInCart.querySelector(".cart__product-count").innerText) + Number(productCount);
+         return false;
       }
       
       productInfo.dataset.count = productCount;
       cartSpace.insertAdjacentHTML("beforeend", 
-      `<div class="cart__product" data-id="`+productInfo.dataset.id+`">
-      <img class="cart__product-image" src="`+productInfo.querySelector(".product__image").src+`">
-      <div class="cart__product-count">`+productInfo.dataset.count+`</div>
-      </div>`);
-   });
+         `<div class="cart__product" data-id="`+productInfo.dataset.id+`">
+         <img class="cart__product-image" src="`+productInfo.querySelector(".product__image").src+`">
+         <div class="cart__product-count">`+productInfo.dataset.count+`</div>
+         </div>`);
+   };
 }
 
 
